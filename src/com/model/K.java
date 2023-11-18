@@ -1,12 +1,15 @@
 package com.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+
+//CONSTANT STATIC FILES THAT WILL BE USED THROUGHOUT THE PROJECT
 
 public class K {
-    public static String lecturer = "RAHIEME SAMUELS";
+    public  static Integer messageSize;
+    public static String tutor = "RAHIEME SAMUELS";
 
-    public static String[] senderList;
+    public static Map<String , Double> senderList = new HashMap<>();
 
     //LIST TO STORE QUESTION
     public static List<Message> QuestionList = new ArrayList<Message>();
