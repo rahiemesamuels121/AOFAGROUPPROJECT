@@ -14,12 +14,17 @@ public class Date {
         this.minute = minute;
         this.seconds = seconds;
     }
+
+    //SECONDARY CONSTRUCTOR FOR THE DATE CLASS THAT TAKES STRING
+    //AS INPUT AND CONEVERTS THEM TO INTEGER
     Date(String hour, String minute , String seconds){
         this.hour =   Integer.parseInt(hour);
         this.minute = Integer.parseInt(minute);
         this.seconds = Integer.parseInt(seconds);
     }
 
+
+    //FUNCTION TO COMPARE IF CURRENT TIME IS LATER/GREATER THAN ANOTHER
     public Boolean isGreaterThan(Date theDate){
         if(this.hour > theDate.hour){
             return false;
@@ -36,6 +41,10 @@ public class Date {
         }
         return true;
     }
+
+
+
+    //SETTERS AND GETTERS
 
     public Integer getHour() {
         return hour;

@@ -8,7 +8,7 @@ public class Message {
 
 
 
-
+//PRIMARY CONSTRUCTOR FOR THE MESSAGE MODEL
     public Message(Integer timeStamp , String sender, String receiver, String messageBody){
         //this.timeStamp = timeStamp;
         this.sender = sender;
