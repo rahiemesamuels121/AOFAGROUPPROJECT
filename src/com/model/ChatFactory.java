@@ -78,16 +78,24 @@ public class ChatFactory {
         public void createFile (){
             chatFile = new File(pathText);
         }
+
+
         public void analyze(){
             System.out.println("In Analyze function");
            K.messageSize = K.QuestionList.size();
            Integer i = 0;
             while(i<K.QuestionList.size()-1){
-                System.out.println("In Loop Iteration " + i);
+                System.out.println("Question : "+K.QuestionList.get(i).getMessageBody());
                 Integer k = 0;
                     while(k<K.AnswerList.size()){
-                        if(K.AnswerList.get(k).getMessageDate().isGreaterThan(K.QuestionList.get(i).getMessageDate())){
-                            K.senderList.put(K.AnswerList.get(k).getSender(),100.0);
+                        if(!K.AnswerList.get(k).getMessageDate().isGreaterThan(K.QuestionList.get(i).getMessageDate())){
+                            System.out.println("Answer"+k+":" +K.AnswerList.get(k).getMessageBody());
+                            if (!K.senderList.containsKey(K.AnswerList.get(k).getSender())){
+                                K.senderList.put(K.AnswerList.get(k).getSender(),100.0);
+                            }else{
+                                K.senderList.put(K.AnswerList.get(k).getSender(),K.senderList.get(K.AnswerList.get(k).getSender())+100);
+                            }
+
                         }
                         k++;
                     }
