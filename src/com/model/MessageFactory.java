@@ -82,28 +82,32 @@ public class MessageFactory {
                             while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100/i;
-                               // System.out.println(currentScore);
+                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                System.out.println(currentScore);
                                 K.senderList.put(currentAnswer.getSender(),currentScore);
                             }
                         }else{
                             for(Message mess : K.answerList){
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100/i;
+                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                System.out.println(currentScore);
                                 K.senderList.put(currentAnswer.getSender(), currentScore);
                             }
                         }
                 i++;
             }
+           // System.out.println(K.senderList);
+            getAverageGrade();
+
         }
         public void getAverageGrade(){
-          Iterator it = K.senderList.entrySet().iterator();
-          while(it.hasNext()){
-              Map.Entry pair = (Map.Entry)it.next();
-              Double x = (Double) pair.getValue();
-              System.out.println(x);
-          }
+           for(String key : K.senderList.keySet()){
+               Double averageScore = K.senderList.get(key) / K.messageSize;
+               K.senderList.put(key,averageScore );
+               System.out.println(key +" : "+K.senderList.get(key));
+           }
+
 
            }
 }
