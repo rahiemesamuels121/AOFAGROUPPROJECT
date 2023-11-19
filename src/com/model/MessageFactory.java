@@ -11,7 +11,6 @@ public class MessageFactory {
     public File chatFile;
     public Scanner chatScanner;
     public List<Message> myarray = new ArrayList<>();
-    String mystring ;
        public MessageFactory(String location){ // DEFAULT CONSTRUCTOR
             setChatFile(location);
             createFile();
@@ -39,8 +38,6 @@ public class MessageFactory {
                     message.setMessageBody(messageBody);
                     message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
                     myarray.add(message);
-                    // K.senderList.put(message.getSender(),0.0);
-                   // System.out.println(K.senderList.get(sender[1].trim()));
                 }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
@@ -49,7 +46,7 @@ public class MessageFactory {
         //FUNCTION TO SPLIT THE ARRAYLIST OF MESSAGES TO A QUESTION LIST AND AN ANSWER LIST
         public void splitList(){
            for(Message m :  myarray){
-               if(m.getSender().equals(K.tutor)){
+               if(m.getSender().equalsIgnoreCase(K.tutor)){
                        K.questionList.add(m);
                }else{
                    K.senderList.put(m.getSender(),0.0);
@@ -59,7 +56,6 @@ public class MessageFactory {
         }
         //PRINTS THE ARRAY OF MESSAGES TO THE CONSOLE *** FOR TESTING ****
         public void printChatArray(){
-           int arrayCounter = 0 ;
            for(Message m : myarray ){
                System.out.println(m.toString());
            }
@@ -80,7 +76,6 @@ public class MessageFactory {
 
             for(Message questions : K.questionList){
                 System.out.println("\nQuestion :"+questions.getMessageBody());
-                  //  for (Message answers : K.answerList){
                         if(i < K.questionList.size()-1){
                             while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
                                 Message currentAnswer = K.answerList.poll();
@@ -88,34 +83,28 @@ public class MessageFactory {
 
                                 if(isMessageLogical(currentAnswer.getMessageBody())){
                                     Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                                    System.out.println(currentScore);
+                                   // System.out.println(currentScore);
                                     K.senderList.put(currentAnswer.getSender(),currentScore);
                                 }else{
-                                    System.out.println("Illogical answer");
+                                    System.out.println("This is not a valid answer answer");
                                 }
-
                             }
                         }else{
                             for(Message mess : K.answerList){
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-
                                 if(isMessageLogical(mess.getMessageBody())){
                                     Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                                    System.out.println(currentScore);
+                                   // System.out.println(currentScore);
                                     K.senderList.put(currentAnswer.getSender(), currentScore);
                                 }else{
-                                    System.out.println("Message is Illogical");
+                                    System.out.println("This is not a valid answer answer");
                                 }
-
                             }
                         }
                 i++;
             }
-           // System.out.println(K.senderList);
-            //getAverageGrade();
         }
-
         //FUNCTION TO CALCULATE THE AVERAGE GRADE BASED ON THE NUMBER OF QUESTIONS
         public void getAverageGrade(JTextArea ta){
            ta.setText("Participation Analysis \n \n");
@@ -126,10 +115,7 @@ public class MessageFactory {
                        //K.senderList.get(key)+"%\n");
                System.out.println(key +" : "+K.senderList.get(key));
            }
-
-
-           }
-
+       }
            //FUNCTION THAT CHECKS IF AN ANSWER IS LOGICAL BY COMPARING IT WITH THE MOST COMMONLY USED ENGLISH WORDS
            public boolean isMessageLogical(String message){
            int i = 0;

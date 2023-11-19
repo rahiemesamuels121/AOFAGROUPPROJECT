@@ -9,10 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MyView implements ActionListener{
-
     //VIEW ELEMENTS INCLUDED IN THE GUI
     public JButton btnChooseFile;
-    public JButton btnChooseLecturer;
+    public JButton btnChooseTutor;
     public JButton btnAnalyze;
     public JButton btnQList;
     public JButton btnClear;
@@ -25,18 +24,18 @@ public class MyView implements ActionListener{
     public JMenu menu;
     public JMenuItem menuItem;
     JPanel panLeft , panRight;
+    JLabel detailLabel;
     MyViewController vc = new MyViewController();
-
     public MyView(){
         configureFrame();
     }
-
     public void configureFrame(){
 //INSTANTIATES EACH VIEW ELEMENT
       JFrame frame = new JFrame("Zoom Chat Analyzer");
+      detailLabel = new JLabel();
       panLeft= new JPanel();
       panRight=new JPanel();
-      btnChooseLecturer = new JButton("Choose Lecturer");
+      btnChooseTutor = new JButton("Choose Tutor");
       tutorInfo = new JLabel();
       btnChooseFile = new JButton("Choose Participant List");
       btnQList = new JButton("Question List");
@@ -51,22 +50,20 @@ public class MyView implements ActionListener{
       tutorInfo.setText("Tutor is :" + K.tutor);
       scrollPane=new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-
-//CONFIGURE PANNEL
-       // panLeft.setLayout(new BoxLayout(panLeft, BoxLayout.Y_AXIS));
+//CONFIGURE LEFT PANEL
         panLeft.add(btnChooseFile);
         panLeft.add(btnQList);
         panLeft.add(btnAList);
         panLeft.add(btnAnalyze);
         panLeft.add(btnClear);
-        panLeft.add(btnChooseLecturer);
+        panLeft.add(btnChooseTutor);
         panLeft.setBackground(Color.lightGray);
         panLeft.setPreferredSize(new Dimension(200, 700));
-
+//CONFIGURE RIGHT PANEL
         panRight.add(textField);
         panRight.add(scrollPane);
         panRight.add(tutorInfo);
+        panRight.add(detailLabel);
         panRight.setPreferredSize(new Dimension(500, 700));
         panRight.setBackground(Color.LIGHT_GRAY);
 //CONFIGURATION AND ACTION LISTENER FOR THE CHOOSE FILE BUTTON
@@ -106,13 +103,18 @@ public class MyView implements ActionListener{
                 vc.clearButtonPressed(textArea,btnChooseFile);
             }
         });
-
         btnAnalyze.setPreferredSize(new Dimension(200, 50));
         btnAnalyze.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vc.messageFactory.analyze();
-                vc.messageFactory.getAverageGrade(textArea);
+                if(!K.answerList.isEmpty()){
+                    detailLabel.setText("*************** "+K.questionList.size() + " Questions\n"+K.answerList.size()+" Responses ***************");
+                    vc.messageFactory.analyze();
+                    vc.messageFactory.getAverageGrade(textArea);
+
+                }else{
+                    textArea.setText("select a tutor\nthen a file\nthen analyze");
+                }
             }
         });
 //CONFIGURATION FOR THE TEXT AREA THAT WILL BE USED AS THE DISPLAY
@@ -120,7 +122,7 @@ public class MyView implements ActionListener{
       textArea.setEditable(false);
       textArea.setLineWrap(true);
       textArea.setWrapStyleWord(true);
-      textArea.setFont(textArea.getFont().deriveFont(20f));
+      textArea.setFont(textArea.getFont().deriveFont(16f));
 //CONFIGURATION FOR THE TEXT AREA
       //textField.setEditable(false);
       textField.setBackground(Color.CYAN);
@@ -128,8 +130,8 @@ public class MyView implements ActionListener{
         menuItem.setBounds(0,0,10,20);
 
 //CONFIGURATION AND ACTION LISTENER FOR CHOSE LECTURER BUTTON
-        btnChooseLecturer.setPreferredSize(new Dimension(200, 50));
-      btnChooseLecturer.addActionListener(new ActionListener() {
+        btnChooseTutor.setPreferredSize(new Dimension(200, 50));
+      btnChooseTutor.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
 
@@ -140,7 +142,6 @@ public class MyView implements ActionListener{
           }
       });
         tutorInfo.setBounds(0,50,700,50);
-
 //CONFIGURATION AND ADDING EACH ELEMENT TO  THE FRAME
       frame.setLayout(new FlowLayout());
       frame.setSize(800,800);
@@ -152,11 +153,6 @@ public class MyView implements ActionListener{
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setJMenuBar(menuBar);
     }
-
-
-
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
