@@ -25,7 +25,7 @@ public class Date {
 
 
     //FUNCTION TO COMPARE IF CURRENT TIME IS LATER/GREATER THAN ANOTHER
-    public Boolean isGreaterThan(Date theDate){
+    public Boolean isLessThan(Date theDate){
         if(this.hour > theDate.hour){
             return false;
         } else if(this.hour == theDate.hour){

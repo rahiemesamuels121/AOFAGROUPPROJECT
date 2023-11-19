@@ -89,7 +89,7 @@ public class MyView implements ActionListener{
         btnAnalyze.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vc.chatFactory.analyze();
+                vc.messageFactory.analyze();
             }
         });
 //CONFIGURATION FOR THE TEXT AREA THAT WILL BE USED AS THE DISPLAY
