@@ -1,5 +1,6 @@
 package com.model;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -112,14 +113,17 @@ public class MessageFactory {
                 i++;
             }
            // System.out.println(K.senderList);
-            getAverageGrade();
+            //getAverageGrade();
         }
 
         //FUNCTION TO CALCULATE THE AVERAGE GRADE BASED ON THE NUMBER OF QUESTIONS
-        public void getAverageGrade(){
+        public void getAverageGrade(JTextArea ta){
+           ta.setText("Participation Analysis \n \n");
            for(String key : K.senderList.keySet()){
                Double averageScore = K.senderList.get(key) / K.messageSize;
                K.senderList.put(key,averageScore );
+               ta.append(key+" : "+ String.format("%.2f",K.senderList.get(key))+"%\n\n");
+                       //K.senderList.get(key)+"%\n");
                System.out.println(key +" : "+K.senderList.get(key));
            }
 
