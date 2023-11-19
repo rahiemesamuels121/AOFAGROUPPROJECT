@@ -74,15 +74,16 @@ public class MessageFactory {
         public void analyze(){
            K.messageSize = K.questionList.size();
            int i = 1;
+
             for(Message questions : K.questionList){
                 System.out.println("\nQuestion :"+questions.getMessageBody());
                   //  for (Message answers : K.answerList){
-                        if(i < K.questionList.size() ){
+                        if(i < K.questionList.size()-1){
                             while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
                                 Double currentScore = K.senderList.get(currentAnswer.getSender())+100/i;
-                                System.out.println(currentScore);
+                               // System.out.println(currentScore);
                                 K.senderList.put(currentAnswer.getSender(),currentScore);
                             }
                         }else{
