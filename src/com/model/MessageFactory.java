@@ -71,6 +71,8 @@ public class MessageFactory {
         public void createFile (){
             chatFile = new File(pathText);
         }
+
+        //ANALYZE FUNCTION TO ALLOCATE GRADES BASED ON PARTICIPATION
         public void analyze(){
            K.messageSize = K.questionList.size();
            int i = 1;
@@ -82,25 +84,38 @@ public class MessageFactory {
                             while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                                System.out.println(currentScore);
-                                K.senderList.put(currentAnswer.getSender(),currentScore);
+
+                                if(isMessageLogical(currentAnswer.getMessageBody())){
+                                    Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                    System.out.println(currentScore);
+                                    K.senderList.put(currentAnswer.getSender(),currentScore);
+                                }else{
+                                    System.out.println("Illogical answer");
+                                }
+
                             }
                         }else{
                             for(Message mess : K.answerList){
                                 Message currentAnswer = K.answerList.poll();
                                 System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                                Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                                System.out.println(currentScore);
-                                K.senderList.put(currentAnswer.getSender(), currentScore);
+
+                                if(isMessageLogical(mess.getMessageBody())){
+                                    Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                    System.out.println(currentScore);
+                                    K.senderList.put(currentAnswer.getSender(), currentScore);
+                                }else{
+                                    System.out.println("Message is Illogical");
+                                }
+
                             }
                         }
                 i++;
             }
            // System.out.println(K.senderList);
             getAverageGrade();
-
         }
+
+        //FUNCTION TO CALCULATE THE AVERAGE GRADE BASED ON THE NUMBER OF QUESTIONS
         public void getAverageGrade(){
            for(String key : K.senderList.keySet()){
                Double averageScore = K.senderList.get(key) / K.messageSize;
@@ -110,4 +125,22 @@ public class MessageFactory {
 
 
            }
+
+           //FUNCTION THAT CHECKS IF AN ANSWER IS LOGICAL BY COMPARING IT WITH THE MOST COMMONLY USED ENGLISH WORDS
+           public boolean isMessageLogical(String message){
+           int i = 0;
+           boolean flag = false;
+
+           while(i<98 && !flag){
+               if(message.toUpperCase().contains(K.wordList[i].toUpperCase())){
+                   flag = true;
+               }else{
+                   flag = false;
+               }
+               i++;
+           }
+
+            return flag;
+           }
+
 }

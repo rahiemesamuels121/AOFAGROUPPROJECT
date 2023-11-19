@@ -31,7 +31,7 @@ public class MyViewController {
         if (!K.answerList.isEmpty() ){
             ta.setText("");
             Integer x =0 ;
-            for  (Message answerMessage : K.answerList ){
+            for  (Message answerMessage : messageFactory.myarray ){
                 ta.append(answerMessage.toString());
                 x++;
             }
