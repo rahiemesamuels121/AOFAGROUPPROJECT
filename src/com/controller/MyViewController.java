@@ -31,7 +31,7 @@ public class MyViewController {
         if (!K.answerList.isEmpty() ){
             ta.setText("");
             Integer x =0 ;
-            for  (Message answerMessage : messageFactory.myarray ){
+            for  (Message answerMessage : messageFactory.myArray){
                 ta.append(answerMessage.toString());
                 x++;
             }
@@ -59,11 +59,10 @@ public void setTutorName(String tutorName){
         K.tutor = tutorName;
     }
 }
-
 public void clearButtonPressed(JTextArea ta,JButton b ){
     K.questionList = new ArrayList<>();
     K.answerList = new LinkedList<>();
-    messageFactory.myarray = null;
+    messageFactory.myArray = null;
     messageFactory.chatFile = null;
     messageFactory.pathText = null;
     ta.setText("");

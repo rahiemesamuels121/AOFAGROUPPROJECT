@@ -111,7 +111,6 @@ public class MyView implements ActionListener{
                     detailLabel.setText("*************** "+K.questionList.size() + " Questions\n"+K.answerList.size()+" Responses ***************");
                     vc.messageFactory.analyze();
                     vc.messageFactory.getAverageGrade(textArea);
-
                 }else{
                     textArea.setText("select a tutor\nthen a file\nthen analyze");
                 }
@@ -125,9 +124,8 @@ public class MyView implements ActionListener{
       textArea.setFont(textArea.getFont().deriveFont(16f));
 //CONFIGURATION FOR THE TEXT AREA
       //textField.setEditable(false);
-      textField.setBackground(Color.CYAN);
-
-        menuItem.setBounds(0,0,10,20);
+      //textField.setBackground(Color.CYAN);
+        //menuItem.setBounds(0,0,10,20);
 
 //CONFIGURATION AND ACTION LISTENER FOR CHOSE LECTURER BUTTON
         btnChooseTutor.setPreferredSize(new Dimension(200, 50));
@@ -137,7 +135,7 @@ public class MyView implements ActionListener{
 
               String tutorName = JOptionPane.showInputDialog(menuItem,"Input Lecturer Name \nLeave blank for default");
               vc.setTutorName(tutorName);
-              tutorInfo.setText("Tutor is :" + K.tutor);
+              tutorInfo.setText("**********Tutor is :" + K.tutor+"**********");
               btnChooseFile.setVisible(true);
           }
       });
@@ -151,7 +149,7 @@ public class MyView implements ActionListener{
       frame.setVisible(true);
       frame.setBackground(Color.black);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setJMenuBar(menuBar);
+      //frame.setJMenuBar(menuBar);
     }
     @Override
     public void actionPerformed(ActionEvent e) {

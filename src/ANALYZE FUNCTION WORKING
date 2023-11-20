@@ -1,0 +1,40 @@
+public void analyze(){
+           List<String> allocatedList = new ArrayList<>();
+           K.messageSize = K.questionList.size();
+           int i = 1;
+
+            for(Message questions : K.questionList){
+                System.out.println("\n"+ questions.getSender()+":"+questions.getMessageBody());
+                        if(i < K.questionList.size()-1){
+                            while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
+                                Message currentAnswer = K.answerList.poll();
+                                //System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
+                                if(isMessageLogical(currentAnswer.getMessageBody())){
+                                    Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                    if(!allocatedList.contains(currentAnswer.getSender())){
+                                        K.senderList.put(currentAnswer.getSender(),currentScore);
+                                        allocatedList.add(currentAnswer.getSender());
+                                    }
+                                }else{
+                                    System.out.println("This is not a valid answer answer");
+                                }
+                            }
+                        }else{
+                            for(Message mess : K.answerList){
+                                Message currentAnswer = K.answerList.poll();
+                                System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
+                                if(isMessageLogical(mess.getMessageBody())){
+                                    Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
+                                    if(!allocatedList.contains(currentAnswer.getSender())){
+                                        K.senderList.put(currentAnswer.getSender(),currentScore);
+                                        allocatedList.add(currentAnswer.getSender());
+                                    }
+                                }else{
+                                    System.out.println("This is not a valid answer answer");
+                                }
+                            }
+                        }
+                        allocatedList.clear();
+                i++;
+            }
+        }
