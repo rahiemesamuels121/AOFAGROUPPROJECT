@@ -75,6 +75,7 @@ public class MyView implements ActionListener{
               btnChooseFile.setName("Pressed");
            vc.chooseFile();
            vc.viewEntireFile(textArea);
+           btnAnalyze.setVisible(true);
           }
       });
 //CONFIGURATION AND ACTION LISTENER FOR THE QUESTION LIST BUTTON
@@ -111,6 +112,7 @@ public class MyView implements ActionListener{
                     detailLabel.setText("*************** "+K.questionList.size() + " Questions ||"+K.answerList.size()+" Responses ||" +K.senderList.size()+" Participants ***************");
                     vc.messageFactory.analyze();
                     vc.messageFactory.getAverageGrade(textArea);
+                    btnAnalyze.setVisible(false);
                 }else{
                     textArea.setText("select a tutor\nthen a file\nthen analyze");
                 }

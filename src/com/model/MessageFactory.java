@@ -130,7 +130,8 @@ public class MessageFactory {
                }else{
                    if(!K.answerList.isEmpty()) {
                        int x = 0;
-                       while (x <= K.answerList.size()) {
+                       int size = K.answerList.size();
+                       while (x < size) {
                            Message thisAnswer = K.answerList.poll();
                            System.out.println(thisAnswer.getMessageBody());
                            if (isMessageLogical(thisAnswer.getMessageBody())) {
@@ -139,7 +140,7 @@ public class MessageFactory {
                                    K.senderList.put(thisAnswer.getSender(), allocatedGrade);
                                    allocatedList.add(thisAnswer.getSender());
                                } else {
-                                   System.out.println("Already in List");
+                                   System.out.println(thisAnswer.getSender()+" Already in List");
                                }
                            } else {
                                System.out.println("Illogical answer");
@@ -159,17 +160,18 @@ public class MessageFactory {
            ta.setText("Participation Analysis \n \n");
            for(String key : K.senderList.keySet()){
                Double averageScore = K.senderList.get(key) / K.messageSize;
+               Double score = K.senderList.get(key)/100;
                K.senderList.put(key,averageScore );
-               ta.append(key+" : "+ String.format("%.1f",K.senderList.get(key))+" %");
+               ta.append(key+" : "+ String.format("%.1f",K.senderList.get(key))+" % ");
 
                if (K.senderList.get(key) == 100){
-                   ta.append("Strong participator\n\n");
+                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+" Strong participator\n\n");
                }else if(K.senderList.get(key) > 50){
-                   ta.append(" Good \n\n");
+                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+"] Good \n\n");
                }else if(K.senderList.get(key) == 50){
-                   ta.append(" Fair \n\n");
+                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+"] Fair \n\n");
                }else if(K.senderList.get(key) < 50) {
-                   ta.append(" Needs to paticipate more\n\n");
+                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+"] Needs to participate more\n\n");
                }else {
                    ta.append("\n\n");
                }
