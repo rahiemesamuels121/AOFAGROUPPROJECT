@@ -22,6 +22,8 @@ public class K {
                     "for" ,
                     "you" ,
                     "with" ,
+                            "yes",
+                            "no",
                     "say" ,
                     "this",
                     "they",

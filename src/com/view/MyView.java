@@ -74,7 +74,7 @@ public class MyView implements ActionListener{
           public void actionPerformed(ActionEvent e) {
               btnChooseFile.setName("Pressed");
            vc.chooseFile();
-           vc.viewAnswersList(textArea);
+           vc.viewEntireFile(textArea);
           }
       });
 //CONFIGURATION AND ACTION LISTENER FOR THE QUESTION LIST BUTTON

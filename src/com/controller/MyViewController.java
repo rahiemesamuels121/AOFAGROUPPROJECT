@@ -70,5 +70,13 @@ public void clearButtonPressed(JTextArea ta,JButton b ){
     b.setVisible(false);
 
 }
+public void viewEntireFile(JTextArea ta){
+        for(Message m: messageFactory.myArray){
+          // if(m.getSender().equalsIgnoreCase(K.tutor)){
+             //   ta.setText("*******TUTOR*******"+m);
+           // }
+            ta.append("\n"+m);
+        }
+}
 
 }

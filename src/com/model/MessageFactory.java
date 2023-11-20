@@ -1,8 +1,9 @@
 package com.model;
 
+import com.sun.jdi.IntegerValue;
+
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class MessageFactory {
@@ -10,6 +11,7 @@ public class MessageFactory {
     public String pathText;
     public File chatFile;
     public Scanner chatScanner;
+    BufferedReader br;
     public List<Message> myArray = new ArrayList<>();
        public MessageFactory(String location){ // DEFAULT CONSTRUCTOR
             setChatFile(location);
@@ -23,31 +25,40 @@ public class MessageFactory {
             try {
                 chatScanner = new Scanner(chatFile);
                 while(chatScanner.hasNext()){
-                    Message message = new Message();
-                    String[] sender ;
-                    String messageBody;
-                    String infoLine ;
-                    String[] timeStamp;
-                    infoLine = chatScanner.nextLine();
-                    timeStamp = infoLine.split(":");
-                    sender = infoLine.split("To");
-                    sender = sender[0].split("From");
-                    messageBody = chatScanner.nextLine();
-                    messageBody = messageBody.trim();
-                    message.setSender(sender[1].trim());
-                    message.setMessageBody(messageBody);
-                    message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
-                    myArray.add(message);
+                    String infoLine = chatScanner.nextLine();
+                    if(infoLine != null){
+                        Message message = new Message();
+                        String[] sender ;
+                        String messageBody;
+                        String[] timeStamp;
+                        timeStamp = infoLine.split(":");
+                        sender = infoLine.split("To");
+                        sender = sender[0].split("From");
+                        messageBody = chatScanner.nextLine();
+                        messageBody = messageBody.trim();
+
+                        message.setSender(sender[1].trim());
+                        message.setMessageBody(messageBody);
+                        message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
+                        myArray.add(message);
+                    }
+
                 }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
+            }  catch (IOException ioe){
+                System.out.println("IO EXCEPTIOB");
+            } catch (IndexOutOfBoundsException obo){
+                System.out.println("OUT OF BOUND EXCEPT"+obo);
             }
         }
         //FUNCTION TO SPLIT THE ARRAYLIST OF MESSAGES TO A QUESTION LIST AND AN ANSWER LIST
         public void splitList(){
            for(Message m : myArray){
                if(m.getSender().equalsIgnoreCase(K.tutor)){
+                   if(m.getMessageBody().contains("?")){
                        K.questionList.add(m);
+                   }
                }else{
                    K.senderList.put(m.getSender(),0.0);
                    K.answerList.add(m);
@@ -100,22 +111,24 @@ public class MessageFactory {
                        }
                    }
                }else{
-                   int x =0;
-                   while(x <= K.answerList.size()){
-                       Message thisAnswer = K.answerList.poll();
-                       System.out.println(thisAnswer.getMessageBody());
-                       if(isMessageLogical(thisAnswer.getMessageBody())){
-                           Double allocatedGrade = K.senderList.get(thisAnswer.getSender())+100;
-                           if(!allocatedList.contains(thisAnswer.getSender())){
-                               K.senderList.put(thisAnswer.getSender(),allocatedGrade);
-                               allocatedList.add(thisAnswer.getSender());
-                           }else{
-                               System.out.println("Already in List");
+                   if(!K.answerList.isEmpty()) {
+                       int x = 0;
+                       while (x <= K.answerList.size()) {
+                           Message thisAnswer = K.answerList.poll();
+                           System.out.println(thisAnswer.getMessageBody());
+                           if (isMessageLogical(thisAnswer.getMessageBody())) {
+                               Double allocatedGrade = K.senderList.get(thisAnswer.getSender()) + 100;
+                               if (!allocatedList.contains(thisAnswer.getSender())) {
+                                   K.senderList.put(thisAnswer.getSender(), allocatedGrade);
+                                   allocatedList.add(thisAnswer.getSender());
+                               } else {
+                                   System.out.println("Already in List");
+                               }
+                           } else {
+                               System.out.println("Illogical answer");
                            }
-                       }else{
-                           System.out.println("Illogical answer");
+                           x++;
                        }
-                       x++;
                    }
                }
 
@@ -130,7 +143,19 @@ public class MessageFactory {
            for(String key : K.senderList.keySet()){
                Double averageScore = K.senderList.get(key) / K.messageSize;
                K.senderList.put(key,averageScore );
-               ta.append(key+" : "+ String.format("%.2f",K.senderList.get(key))+"%\n\n");
+               ta.append(key+" : "+ String.format("%.1f",K.senderList.get(key))+" %");
+
+               if (K.senderList.get(key) == 100){
+                   ta.append("Strong participator\n\n");
+               }else if(K.senderList.get(key) > 50){
+                   ta.append(" Good \n\n");
+               }else if(K.senderList.get(key) == 50){
+                   ta.append(" Fair \n\n");
+               }else if(K.senderList.get(key) < 50) {
+                   ta.append(" Needs to paticipate more\n\n");
+               }else {
+                   ta.append("\n\n");
+               }
                        //K.senderList.get(key)+"%\n");
                System.out.println(key +" : "+K.senderList.get(key));
            }
@@ -141,7 +166,7 @@ public class MessageFactory {
            boolean flag = false;
 
            while(i<98 && !flag){
-               if(message.toUpperCase().contains(K.wordList[i].toUpperCase())){
+               if(message.toUpperCase().contains(K.wordList[i].toUpperCase()) ){
                    flag = true;
                }else{
                    flag = false;
@@ -151,10 +176,14 @@ public class MessageFactory {
             return flag;
            }
 
-           public void upToSpeed(){
-            while(K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(0).getMessageDate())){
-                K.answerList.poll();
-            }
+           public boolean isDatePresent(String s){
+           String[] list;
+           list = s.split(":");
+
+           if(list.length != 3){
+               return true;
+           }
+           return false;
            }
 
 }
