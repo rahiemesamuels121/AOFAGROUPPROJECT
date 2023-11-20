@@ -10,28 +10,45 @@ public class MessageFactory {
 
     public String pathText;
     public File chatFile;
+    public String eof = "";
     public Scanner chatScanner;
     BufferedReader br;
     public List<Message> myArray = new ArrayList<>();
        public MessageFactory(String location){ // DEFAULT CONSTRUCTOR
             setChatFile(location);
             createFile();
-            openFile();
+            openFile(location);
            // printChatArray();
             splitList();
         }
         //FUNCTION TO OPEN FILE USING A SCANNER OBJECT
-        public void openFile() {
+        public void openFile(String location) {
             try {
                 chatScanner = new Scanner(chatFile);
                 while(chatScanner.hasNext()){
-                    String infoLine = chatScanner.nextLine();
-                    if(infoLine != null){
-                        Message message = new Message();
-                        String[] sender ;
-                        String messageBody;
-                        String[] timeStamp;
-                        timeStamp = infoLine.split(":");
+                        String infoLine = chatScanner.nextLine();
+                        if (infoLine != null) {
+                            System.out.println("INFO LINE HAS A VALUE");
+                            Message message = new Message();
+                            String[] sender;
+                            String messageBody;
+                            String[] timeStamp;
+                            if (isDatePresent(infoLine)) {
+                                System.out.println("DATE IS PRESENT");
+                                timeStamp = infoLine.split(":");
+                                sender = infoLine.split("To");
+                                sender = sender[0].split("From");
+                                messageBody = chatScanner.nextLine();
+                                messageBody = messageBody.trim();
+                                message.setSender(sender[1].trim());
+                                message.setMessageBody(messageBody);
+                                message.setMessageDate(timeStamp[0], timeStamp[1], timeStamp[2].substring(0, 2));
+                                myArray.add(message);
+                            } else {
+                                System.out.println("\n date is not present");
+                                myArray.get(myArray.size()-1).appendToBody(infoLine);
+                            }
+                        /*timeStamp = infoLine.split(":");
                         sender = infoLine.split("To");
                         sender = sender[0].split("From");
                         messageBody = chatScanner.nextLine();
@@ -40,8 +57,8 @@ public class MessageFactory {
                         message.setSender(sender[1].trim());
                         message.setMessageBody(messageBody);
                         message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
-                        myArray.add(message);
-                    }
+                        myArray.add(message);*/
+                        }
 
                 }
             } catch (FileNotFoundException e) {
@@ -180,10 +197,10 @@ public class MessageFactory {
            String[] list;
            list = s.split(":");
 
-           if(list.length != 3){
-               return true;
+           if(list.length<3){
+               return false;
            }
-           return false;
+           return true;
            }
 
 }

@@ -48,4 +48,8 @@ public class Message {
         messageDate = new Date(hour,minute,seconds);
 
     }
+
+    public void appendToBody(String toAppend){
+        this.messageBody.concat(toAppend);
+    }
 }

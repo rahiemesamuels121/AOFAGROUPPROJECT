@@ -1,0 +1,45 @@
+ public void openFile(String location) {
+            try {
+                //chatScanner = new Scanner(chatFile);
+                chatScanner = new BufferedReader(new FileReader(location));
+                while(chatScanner.hasNext()){
+                    String infoLine = chatScanner.nextLine();
+                    if(infoLine != null){
+                        Message message = new Message();
+                        String[] sender ;
+                        String messageBody;
+                        String[] timeStamp;
+                        if(isDatePresent(infoLine)){
+                            timeStamp = infoLine.split(":");
+                            sender = infoLine.split("To");
+                            sender = sender[0].split("From");
+                            messageBody = chatScanner.nextLine();
+                            messageBody = messageBody.trim();
+                            message.setSender(sender[1].trim());
+                            message.setMessageBody(messageBody);
+                            message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
+                            myArray.add(message);
+                        }else{
+                            myArray.get(myArray.size()-1).appendToBody(infoLine);
+                        }
+                        /*timeStamp = infoLine.split(":");
+                        sender = infoLine.split("To");
+                        sender = sender[0].split("From");
+                        messageBody = chatScanner.nextLine();
+                        messageBody = messageBody.trim();
+
+                        message.setSender(sender[1].trim());
+                        message.setMessageBody(messageBody);
+                        message.setMessageDate(timeStamp[0],timeStamp[1],timeStamp[2].substring(0,2));
+                        myArray.add(message);*/
+                    }
+
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }  catch (IOException ioe){
+                System.out.println("IO EXCEPTIOB");
+            } catch (IndexOutOfBoundsException obo){
+                System.out.println("OUT OF BOUND EXCEPT"+obo);
+            }
+        }
