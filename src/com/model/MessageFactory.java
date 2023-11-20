@@ -165,7 +165,7 @@ public class MessageFactory {
                ta.append(key+" : "+ String.format("%.1f",K.senderList.get(key))+" % ");
 
                if (K.senderList.get(key) == 100){
-                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+" Strong participator\n\n");
+                   ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+"] Strong participator\n\n");
                }else if(K.senderList.get(key) > 50){
                    ta.append("["+String.format("%.0f",score)+"/"+K.messageSize+"] Good \n\n");
                }else if(K.senderList.get(key) == 50){
