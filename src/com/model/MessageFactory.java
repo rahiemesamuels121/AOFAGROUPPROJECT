@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class MessageFactory {
+
     public String pathText;
     public File chatFile;
     public Scanner chatScanner;
@@ -14,7 +15,7 @@ public class MessageFactory {
             setChatFile(location);
             createFile();
             openFile();
-            printChatArray();
+           // printChatArray();
             splitList();
         }
         //FUNCTION TO OPEN FILE USING A SCANNER OBJECT
@@ -69,45 +70,60 @@ public class MessageFactory {
         }
         //ANALYZE FUNCTION TO ALLOCATE GRADES BASED ON PARTICIPATION
         public void analyze(){
-            List<String> allocatedList = new ArrayList<>();
-            K.messageSize = K.questionList.size();
-            int i = 1;
-            for(Message questions : K.questionList){
-                System.out.println("\n"+ questions.getSender()+":"+questions.getMessageBody());
-                if(i < K.questionList.size()-1){
-                    while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())) {
-                        Message currentAnswer = K.answerList.poll();
-                        //System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                        if(isMessageLogical(currentAnswer.getMessageBody())){
-                            Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                            if(!allocatedList.contains(currentAnswer.getSender())){
-                                K.senderList.put(currentAnswer.getSender(),currentScore);
-                                allocatedList.add(currentAnswer.getSender());
-                            }
-                        }else{
-                            System.out.println("This is not a valid answer answer");
-                        }
-                    }
-                }else{
-                    for(Message mess : K.answerList){
-                        Message currentAnswer = K.answerList.poll();
-                        System.out.println("Answer " + ":" + currentAnswer.getMessageBody());
-                        if(isMessageLogical(mess.getMessageBody())){
-                            Double currentScore = K.senderList.get(currentAnswer.getSender())+100;
-                            if(!allocatedList.contains(currentAnswer.getSender())){
-                                K.senderList.put(currentAnswer.getSender(),currentScore);
-                                allocatedList.add(currentAnswer.getSender());
-                            }
-                        }else{
-                            System.out.println("This is not a valid answer answer");
-                        }
-                    }
-                }
-               // allocatedList.clear();
-                i++;
-            }
-        }
+           List<String> allocatedList = new ArrayList<>();
+           int i = 1;
+           K.messageSize = K.questionList.size();
 
+           if(K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(0).getMessageDate())){
+               System.out.println("Less than first date");
+               while(K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(0).getMessageDate())){
+                   K.answerList.poll();
+
+               }
+           }
+           for(Message question : K.questionList){
+               System.out.println("Question : "+ question.getMessageBody());
+               if(i < K.questionList.size()-1){
+                   while (K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(i).getMessageDate())){
+                       Message currentAnswer = K.answerList.poll();
+                       System.out.println(currentAnswer.getMessageBody());
+                       if(isMessageLogical(currentAnswer.getMessageBody())){
+                           Double allocatedGrade = K.senderList.get(currentAnswer.getSender())+100;
+                           if (!allocatedList.contains(currentAnswer.getSender())){
+                               K.senderList.put(currentAnswer.getSender(),allocatedGrade);
+                               allocatedList.add(currentAnswer.getSender());
+                           }else{
+                               System.out.println(currentAnswer.getSender() + "Already in List");
+                           }
+                       }else{
+                           System.out.println("Illogical answer");
+                       }
+                   }
+               }else{
+                   int x =0;
+                   while(x <= K.answerList.size()){
+                       Message thisAnswer = K.answerList.poll();
+                       System.out.println(thisAnswer.getMessageBody());
+                       if(isMessageLogical(thisAnswer.getMessageBody())){
+                           Double allocatedGrade = K.senderList.get(thisAnswer.getSender())+100;
+                           if(!allocatedList.contains(thisAnswer.getSender())){
+                               K.senderList.put(thisAnswer.getSender(),allocatedGrade);
+                               allocatedList.add(thisAnswer.getSender());
+                           }else{
+                               System.out.println("Already in List");
+                           }
+                       }else{
+                           System.out.println("Illogical answer");
+                       }
+                       x++;
+                   }
+               }
+
+               i++;
+               allocatedList.clear();
+           }
+
+        }
         //FUNCTION TO CALCULATE THE AVERAGE GRADE BASED ON THE NUMBER OF QUESTIONS
         public void getAverageGrade(JTextArea ta){
            ta.setText("Participation Analysis \n \n");
@@ -134,4 +150,11 @@ public class MessageFactory {
            }
             return flag;
            }
+
+           public void upToSpeed(){
+            while(K.answerList.peek().getMessageDate().isLessThan(K.questionList.get(0).getMessageDate())){
+                K.answerList.poll();
+            }
+           }
+
 }
