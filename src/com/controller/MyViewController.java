@@ -30,10 +30,10 @@ public class MyViewController {
     public void viewAnswersList(JTextArea ta){
         if (!K.answerList.isEmpty() ){
             ta.setText("");
-            Integer x =0 ;
-            for  (Message answerMessage : messageFactory.myArray){
+           // Integer x =0 ;
+            for  (Message answerMessage : K.answerList){
                 ta.append(answerMessage.toString());
-                x++;
+               // x++;
             }
         }else{
             ta.setText("Select a Tutor to continue");
@@ -60,9 +60,10 @@ public void setTutorName(String tutorName){
     }
 }
 public void clearButtonPressed(JTextArea ta,JButton b ){
-    K.questionList = new ArrayList<>();
-    K.answerList = new LinkedList<>();
-    messageFactory.myArray = null;
+    K.questionList.clear();
+    K.answerList.clear();
+    K.senderList.clear();
+    messageFactory.myArray.clear();
     messageFactory.chatFile = null;
     messageFactory.pathText = null;
     ta.setText("");

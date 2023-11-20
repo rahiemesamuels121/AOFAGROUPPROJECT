@@ -108,7 +108,7 @@ public class MyView implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!K.answerList.isEmpty()){
-                    detailLabel.setText("*************** "+K.questionList.size() + " Questions\n"+K.answerList.size()+" Responses ***************");
+                    detailLabel.setText("*************** "+K.questionList.size() + " Questions ||"+K.answerList.size()+" Responses ||" +K.senderList.size()+" Participants ***************");
                     vc.messageFactory.analyze();
                     vc.messageFactory.getAverageGrade(textArea);
                 }else{
